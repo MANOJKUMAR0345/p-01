@@ -13,7 +13,7 @@ pipeline {
                 sh '''
                 docker stop p-01-frontend || true
                 docker rm p-01-frontend || true
-                docker run -d -p 8080:80 --name p-01-frontend p-01-frontend
+                docker run -d -p 8090:80 --name p-01-frontend p-01-frontend
                 '''
             }
         }
