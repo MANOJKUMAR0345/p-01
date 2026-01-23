@@ -1,0 +1,205 @@
+const mongoose = require('mongoose');
+
+// Period mapping:
+// Forenoon: [1, 2, 3, 4] - 8:45-9:35 am, 9:35-10:25 am, 10:45-11:35 am, 11:35 am-12:25 pm
+// Afternoon: [5, 6, 7] - 1:25-2:15 pm, 2:15-3:05 pm, 3:25-4:15 pm
+
+const attendanceSchema = new mongoose.Schema({
+  student: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Student',
+    required: [true, 'Student reference is required']
+  },
+  date: {
+    type: Date,
+    required: [true, 'Date is required'],
+    default: Date.now
+  },
+  forenoon: {
+    periods: [{
+      period: {
+        type: Number,
+        enum: [1, 2, 3, 4],
+        required: true
+      },
+      status: {
+        type: String,
+        enum: ['present', 'absent', 'late', 'half-day'],
+        required: true
+      },
+      remarks: {
+        type: String,
+        trim: true,
+        maxlength: [200, 'Remarks cannot exceed 200 characters']
+      }
+    }],
+    default: []
+  },
+  afternoon: {
+    periods: [{
+      period: {
+        type: Number,
+        enum: [5, 6, 7],
+        required: true
+      },
+      status: {
+        type: String,
+        enum: ['present', 'absent', 'late', 'half-day'],
+        required: true
+      },
+      remarks: {
+        type: String,
+        trim: true,
+        maxlength: [200, 'Remarks cannot exceed 200 characters']
+      }
+    }],
+    default: []
+  },
+  markedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Admin',
+    required: [true, 'Admin who marked attendance is required']
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
+  }
+}, {
+  timestamps: true
+});
+
+// Compound index to ensure one attendance record per student per date
+attendanceSchema.index({ student: 1, date: 1 }, { unique: true });
+
+// Static method to find attendance by student and date
+attendanceSchema.statics.findByStudentAndDate = function(studentId, date) {
+  const startOfDay = new Date(date);
+  startOfDay.setHours(0, 0, 0, 0);
+  
+  const endOfDay = new Date(date);
+  endOfDay.setHours(23, 59, 59, 999);
+  
+  return this.findOne({
+    student: studentId,
+    date: {
+      $gte: startOfDay,
+      $lte: endOfDay
+    }
+  });
+};
+
+// Static method to get all attendance records for a student on a specific date (all periods)
+attendanceSchema.statics.getAllPeriodsForStudentAndDate = function(studentId, date) {
+  const startOfDay = new Date(date);
+  startOfDay.setHours(0, 0, 0, 0);
+  const endOfDay = new Date(date);
+  endOfDay.setHours(23, 59, 59, 999);
+  return this.find({
+    student: studentId,
+    date: { $gte: startOfDay, $lte: endOfDay }
+  });
+};
+
+// Static method to get attendance for a student in a date range
+attendanceSchema.statics.getStudentAttendance = function(studentId, startDate, endDate) {
+  return this.find({
+    student: studentId,
+    date: {
+      $gte: startDate,
+      $lte: endDate
+    }
+  }).populate('student', 'fullName rollNumber className section');
+};
+
+// Static method to get attendance for a class on a specific date
+attendanceSchema.statics.getClassAttendance = function(className, section, date) {
+  const startOfDay = new Date(date);
+  startOfDay.setHours(0, 0, 0, 0);
+  
+  const endOfDay = new Date(date);
+  endOfDay.setHours(23, 59, 59, 999);
+  
+  return this.find({
+    date: {
+      $gte: startOfDay,
+      $lte: endOfDay
+    }
+  }).populate({
+    path: 'student',
+    match: { className: className, section: section },
+    select: 'fullName rollNumber className section'
+  });
+};
+
+// Static method to get period timings
+attendanceSchema.statics.getPeriodTiming = function(period) {
+  const timings = {
+    1: '8:45-9:35 am',
+    2: '9:35-10:25 am',
+    3: '10:45-11:35 am',
+    4: '11:35 am-12:25 pm',
+    5: '1:25-2:15 pm',
+    6: '2:15-3:05 pm',
+    7: '3:25-4:15 pm'
+  };
+  return timings[period] || '';
+};
+
+// Static method to get session periods
+attendanceSchema.statics.getSessionPeriods = function(session) {
+  if (session === 'forenoon') return [1,2,3,4];
+  if (session === 'afternoon') return [5,6,7];
+  return [];
+};
+
+// Static method to get attendance statistics for a student
+attendanceSchema.statics.getStudentStats = async function(studentId, startDate, endDate) {
+  const attendance = await this.find({
+    student: studentId,
+    date: {
+      $gte: startDate,
+      $lte: endDate
+    }
+  });
+
+  let total = 0;
+  let present = 0;
+  let absent = 0;
+  let late = 0;
+  let halfDay = 0;
+
+  attendance.forEach(record => {
+    // Count forenoon periods
+    record.forenoon.periods.forEach(p => {
+      total++;
+      if (p.status === 'present') present++;
+      else if (p.status === 'absent') absent++;
+      else if (p.status === 'late') late++;
+      else if (p.status === 'half-day') halfDay++;
+    });
+
+    // Count afternoon periods
+    record.afternoon.periods.forEach(p => {
+      total++;
+      if (p.status === 'present') present++;
+      else if (p.status === 'absent') absent++;
+      else if (p.status === 'late') late++;
+      else if (p.status === 'half-day') halfDay++;
+    });
+  });
+
+  return {
+    total,
+    present,
+    absent,
+    late,
+    halfDay,
+    percentage: total > 0 ? Math.round((present / total) * 100) : 0
+  };
+};
+
+module.exports = mongoose.model('Attendance', attendanceSchema); 

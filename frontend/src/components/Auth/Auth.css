@@ -1,0 +1,619 @@
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  opacity: 0.3;
+  z-index: 1;
+}
+
+.auth-form-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 500px;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.auth-form {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-8);
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-primary);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+/* College Logo Section Styles */
+.college-logo-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  padding: var(--space-5);
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 25%, #6366f1 50%, #8b5cf6 75%, #a855f7 100%);
+  border-radius: var(--radius-2xl);
+  box-shadow:
+    0 20px 40px -12px rgba(30, 64, 175, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.college-logo-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.college-logo {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.college-logo:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 15px 35px -10px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.college-logo svg {
+  width: 45px;
+  height: 45px;
+  color: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.college-info {
+  text-align: left;
+  color: var(--white);
+  position: relative;
+  z-index: 2;
+}
+
+.college-name {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0 0 var(--space-2) 0;
+  letter-spacing: 1px;
+  line-height: 1.1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.college-subtitle {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 var(--space-2) 0;
+  opacity: 0.95;
+  color: #fbbf24;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.5px;
+}
+
+.college-details {
+  font-size: 0.8rem;
+  margin: 0 0 var(--space-2) 0;
+  opacity: 0.9;
+  line-height: 1.4;
+  color: #e2e8f0;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.college-address {
+  font-size: 0.75rem;
+  margin: 0;
+  opacity: 0.85;
+  line-height: 1.3;
+  color: #cbd5e1;
+  font-weight: 400;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.auth-logo {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--space-6);
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  animation: pulse 2s infinite;
+}
+
+.auth-logo svg {
+  width: 40px;
+  height: 40px;
+  color: var(--white);
+}
+
+.auth-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: var(--space-2);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.auth-subtitle {
+  color: var(--gray-600);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.form-group {
+  margin-bottom: var(--space-6);
+  position: relative;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-weight: 500;
+  color: var(--gray-700);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-input {
+  width: 100%;
+  padding: var(--space-4);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  font-size: 1rem;
+  transition: var(--transition-normal);
+  background: var(--white);
+  color: var(--gray-800);
+  position: relative;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow:
+    0 0 0 3px rgba(102, 126, 234, 0.1),
+    0 4px 12px rgba(102, 126, 234, 0.15);
+  transform: translateY(-2px);
+}
+
+.form-input.error {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-input.success {
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.input-icon {
+  position: absolute;
+  right: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-400);
+  transition: var(--transition-fast);
+}
+
+.form-input:focus+.input-icon {
+  color: var(--primary-color);
+}
+
+.error-message {
+  color: var(--danger);
+  font-size: 0.875rem;
+  margin-top: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  animation: slideIn 0.3s ease-out;
+}
+
+.success-message {
+  color: var(--success);
+  font-size: 0.875rem;
+  margin-top: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  animation: slideIn 0.3s ease-out;
+}
+
+.auth-button {
+  width: 100%;
+  padding: var(--space-4) var(--space-6);
+  background: var(--gradient-primary);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  margin-top: var(--space-4);
+  box-shadow: var(--shadow-md);
+}
+
+.auth-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s;
+}
+
+.auth-button:hover::before {
+  left: 100%;
+}
+
+.auth-button:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-xl);
+}
+
+.auth-button:active {
+  transform: translateY(-1px);
+}
+
+.auth-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.auth-button:disabled:hover {
+  transform: none;
+  box-shadow: var(--shadow-md);
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--gray-200);
+}
+
+.auth-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition-fast);
+  position: relative;
+}
+
+.auth-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gradient-primary);
+  transition: width 0.3s ease;
+}
+
+.auth-link:hover::after {
+  width: 100%;
+}
+
+.auth-link:hover {
+  color: var(--primary-dark);
+}
+
+.password-requirements {
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-top: var(--space-3);
+  border-left: 4px solid var(--primary-color);
+}
+
+.requirements-title {
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: var(--space-2);
+  font-size: 0.9rem;
+}
+
+.requirement {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  margin-bottom: var(--space-1);
+}
+
+.requirement.met {
+  color: var(--success);
+}
+
+.requirement-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.requirement.met .requirement-icon {
+  background: var(--success);
+  color: var(--white);
+}
+
+.requirement:not(.met) .requirement-icon {
+  background: var(--gray-300);
+  color: var(--gray-500);
+}
+
+/* Floating Elements Animation */
+.floating-element {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  animation: float 6s ease-in-out infinite;
+}
+
+.floating-element:nth-child(1) {
+  width: 80px;
+  height: 80px;
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.floating-element:nth-child(2) {
+  width: 120px;
+  height: 120px;
+  top: 20%;
+  right: 10%;
+  animation-delay: 2s;
+}
+
+.floating-element:nth-child(3) {
+  width: 60px;
+  height: 60px;
+  bottom: 20%;
+  left: 20%;
+  animation-delay: 4s;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+  }
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--white);
+  animation: spin 1s ease-in-out infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .auth-container {
+    padding: var(--space-3);
+  }
+
+  .auth-form {
+    padding: var(--space-6);
+  }
+
+  .auth-title {
+    font-size: 1.75rem;
+  }
+
+  .college-logo-section {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-3);
+  }
+
+  .college-info {
+    text-align: center;
+  }
+
+  .college-name {
+    font-size: 1.1rem;
+  }
+
+  .college-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .college-details {
+    font-size: 0.7rem;
+  }
+
+  .college-address {
+    font-size: 0.65rem;
+  }
+
+  .college-logo {
+    width: 60px;
+    height: 60px;
+  }
+
+  .college-logo svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .auth-logo {
+    width: 60px;
+    height: 60px;
+  }
+
+  .auth-logo svg {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .auth-form {
+    background: rgba(17, 24, 39, 0.95);
+    color: var(--white);
+  }
+
+  .form-input {
+    background: var(--gray-800);
+    color: var(--white);
+    border-color: var(--gray-600);
+  }
+
+  .form-input:focus {
+    border-color: var(--primary-color);
+  }
+
+  .auth-title {
+    color: var(--white);
+  }
+
+  .form-label {
+    color: var(--gray-300);
+  }
+}
+
+@keyframes shimmer {
+
+  0%,
+  100% {
+    transform: translateX(-100%);
+  }
+
+  50% {
+    transform: translateX(100%);
+  }
+}
+
+/* Role Selector Styles */
+.role-selector {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 0.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.role-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #64748b;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.role-btn:hover {
+  background: rgba(0, 0, 0, 0.03);
+  color: #334155;
+}
+
+.role-btn.active {
+  background: white;
+  color: #2563eb;
+  /* Primary Blue */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  font-weight: 600;
+}
+
+.role-btn svg {
+  font-size: 1.1em;
+}
